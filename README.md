@@ -12,6 +12,7 @@ Included is a Simulide project which runs the Atmel C code and simulates the con
 ![Simulide](https://raw.githubusercontent.com/clickworkorange/Atmel-PWM-RTU/main/Simulide.png)
 
 ### Goals
+* Design the full circuit and create PCB layouts in KiCAD
 * Trigger EEPROM writes with a "save parameters" Modbus register 
 * Enforce limits on register values and validate input parameters
 * Make slave address & comms parameters settable through Modbus registers
