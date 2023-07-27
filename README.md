@@ -26,7 +26,6 @@ Included is a Simulide project which runs the Atmel C code and simulates the con
 * Make slave address & comms parameters settable through Modbus registers
 * Incorporate a reset button to return the EEPROM to factory defaults
 * Make PWM phase and frequency (or scaler) settable through Modbus registers
-* Move relevant bits from C source to a header file 
 * Simplify port configuration & port reset code 
 
 ### Wetware at work
