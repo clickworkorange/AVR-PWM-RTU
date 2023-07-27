@@ -1,21 +1,28 @@
+/*
+             |||
+            (o o)
+ +-------oOO-{_}-OOo--------+
+ |                          |
+ |   © 2023 Ola Tuvesson    |
+ |   clickworkorange Ltd    |
+ |                          |
+ | info@clickworkorange.com |
+ |                          |
+ +--------------------------+
+
+*/
+
 #include <avr/io.h>
 #include <avr/interrupt.h>
 #include <avr/wdt.h>
 #include <avr/eeprom.h>
+#include "avr_pwm_rtu.h"
 #include "yaMBSiavr.h"
-
-// why is BAUD definition here ignored by #ifndef in yaMBSiavr.h?
-// #define BAUD 9600L
-
-#define channels 4
-#define regsize 20
-#define read_register_array(address,value_p,length) eeprom_read_block ((void *)value_p, (const void *)address, length)
-#define write_register_array(address,value_p,length) eeprom_write_block ((const void *)value_p, (void *)address, length)
 
 volatile uint8_t instate = 0;
 volatile uint8_t outstate = 0;
-volatile uint16_t EEMEM eeprom[regsize];
-volatile uint16_t registers[regsize];
+volatile uint16_t EEMEM eeprom[REGSIZE];
+volatile uint16_t registers[REGSIZE];
 
 static uint8_t const BTN0 = 0b00000100; //PORTC
 static uint8_t const BTN1 = 0b00100000; //PORTC
@@ -23,24 +30,24 @@ static uint8_t const BTN2 = 0b00100000; //PORTB
 static uint8_t const BTN3 = 0b00000001; //PORTD
 
 void loadRegisters(void) {
-	read_register_array(eeprom, registers, regsize * 2);
+	read_register_array(eeprom, registers, REGSIZE * 2);
 }
 void saveRegisters(void) {
-	write_register_array(eeprom, registers, regsize * 2);
+	write_register_array(eeprom, registers, REGSIZE * 2);
 }
 
 void pinSetup(void) { 
-	// output on B4,B5 (LEDs ch4) & B1,B2,B3 (PWM ch1-3)
+	// output on B4,B5 (LEDs ch3) & B1,B2,B3 (PWM ch0-2)
 	  DDRB |= 0b00111110;
-	// output on C0,C1 & C3,C4 (LEDs ch1 & 2)
+	// output on C0,C1 & C3,C4 (LEDs ch0 & 1)
 	  DDRC |= 0b00011011;
-	// output on D6,D7 (LEDs ch3) & D3 (PWM ch4)
+	// output on D6,D7 (LEDs ch2) & D3 (PWM ch3)
 	  DDRD |= 0b11001000;
-	// pull-up on B0 (button input ch4)
+	// pull-up on B0 (button input ch3)
 	 PORTB |= BTN3;
-	// pull-up on C2,C5 (button inputs ch1 & 2)
+	// pull-up on C2,C5 (button inputs ch0 & 1)
 	 PORTC |= BTN0 | BTN1;
-	// pull-up on D5 (button input ch3)
+	// pull-up on D5 (button input ch2)
 	 PORTD |= BTN2;
 
 	// UART clock on timer0
@@ -89,12 +96,13 @@ void setLevel(uint8_t channel, uint8_t level) {
 }
 
 void updateLevels(void) {
-	for(int i = 0; i < channels; i++) {
+	for(int i = 0; i < CHANNELS; i++) {
 		setLevel(i, registers[i]);
 	}
 }
 
 void incrChannel(uint8_t channel) {
+	// TODO: return int?
 	uint8_t new_level = (registers[channel] + 1) % 4;
 	setLevel(channel, new_level);
 }
@@ -103,17 +111,17 @@ void modbusGet(void) {
 	if (modbusGetBusState() & (1<<ReceiveCompleted)) {
 		switch(rxbuffer[1]) {
 			case fcReadHoldingRegisters: {
-				modbusExchangeRegisters(registers,0,regsize);
+				modbusExchangeRegisters(registers,0,REGSIZE);
 			}
 			break;
 			case fcPresetSingleRegister: {
-				modbusExchangeRegisters(registers,0,regsize);
+				modbusExchangeRegisters(registers,0,REGSIZE);
 				updateLevels();
 				saveRegisters();
 			}
 			break;
 			case fcPresetMultipleRegisters: {
-				modbusExchangeRegisters(registers,0,regsize);
+				modbusExchangeRegisters(registers,0,REGSIZE);
 				updateLevels();
 				saveRegisters();
 			}
