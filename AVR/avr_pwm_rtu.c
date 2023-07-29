@@ -33,7 +33,11 @@ void loadRegisters(void) {
 	read_register_array(eeprom, registers, REGSIZE * 2);
 }
 void saveRegisters(void) {
-	write_register_array(eeprom, registers, REGSIZE * 2);
+	if(registers[REGSIZE-1] == 1) {
+		// the last register is the save flag, reset it
+		registers[REGSIZE-1] = 0;
+		write_register_array(eeprom, registers, REGSIZE * 2);
+	}
 }
 
 void pinSetup(void) { 
@@ -55,14 +59,18 @@ void pinSetup(void) {
 	TIMSK0 |= (1<<TOIE0);
 
 	// 8-bit Fast PWM on timer1 (on B1,B2)
-	TCCR1A |= _BV(COM1A1) | _BV(COM1B1) | _BV(WGM10);
+	TCCR1A |= _BV(COM1A1) | _BV(COM1B1) | _BV(WGM10); // inverted
 	//TCCR1B |= _BV(CS20) | _BV(WGM12); // 31.25 KHz (prescaler 1)
 	TCCR1B |= _BV(CS12) | _BV(WGM12); // 30.52 Hz (prescaler 256)
 
 	// 8-bit Fast PWM on timer2 (on B3,D3)
 	TCCR2A = _BV(COM2A1) | _BV(COM2B1) | _BV(WGM21) | _BV(WGM20);
 	//TCCR2B = _BV(CS20); // 31.25 KHz (prescaler 1)
+	//TCCR2B = _BV(CS21); // 976.6 Hz (prescaler 8)
+	//TCCR2B = _BV(CS20) | _BV(CS21); // 244.1 Hz (prescaler 32)
+	//TCCR2B = _BV(CS22); // 122.1 Hz (prescaler 64)
 	TCCR2B = _BV(CS21) | _BV(CS22); // 30.52 Hz (prescaler 256)
+
 }
 
 ISR(TIMER0_OVF_vect) { 
@@ -72,25 +80,21 @@ ISR(TIMER0_OVF_vect) {
 void setLevel(uint8_t channel, uint8_t level) {
 	registers[channel] = level;
 	switch(channel) {
-		case 0: {
+		case 0:
 			OCR1A = registers[4 + level];
 			PORTC = (registers[0] | (registers[1]<<3)) | BTN0 | BTN1;
-		}
 		break;
-		case 1: {
+		case 1:
 			OCR1B = registers[8 + level];
 			PORTC = (registers[0] | (registers[1]<<3)) | BTN0 | BTN1;
-		}
 		break;
-		case 2: {
+		case 2:
 			OCR2A = registers[12 + level];
 			PORTD = registers[2]<<6 | BTN2;
-		}
 		break;
-		case 3: {
+		case 3:
 			OCR2B = registers[16 + level];
 			PORTB = registers[3]<<4 | BTN3;
-		}
 		break;
 	}
 }
@@ -110,25 +114,17 @@ void incrChannel(uint8_t channel) {
 void modbusGet(void) {
 	if (modbusGetBusState() & (1<<ReceiveCompleted)) {
 		switch(rxbuffer[1]) {
-			case fcReadHoldingRegisters: {
+			case fcReadHoldingRegisters:
 				modbusExchangeRegisters(registers,0,REGSIZE);
-			}
 			break;
-			case fcPresetSingleRegister: {
-				modbusExchangeRegisters(registers,0,REGSIZE);
-				updateLevels();
-				saveRegisters();
-			}
-			break;
-			case fcPresetMultipleRegisters: {
+			case fcPresetSingleRegister: // fall through
+			case fcPresetMultipleRegisters:
 				modbusExchangeRegisters(registers,0,REGSIZE);
 				updateLevels();
 				saveRegisters();
-			}
 			break;
-			default: {
+			default:
 				modbusSendException(ecIllegalFunction);
-			}
 			break;
 		}
 	}
@@ -143,7 +139,6 @@ int main(void) {
 	wdt_enable(7);
 	updateLevels();
 
-	// TODO: do not write EEPROM for registers 0-3
 	// TODO: assemble LED pins into a byte that can be written to? virtual port?
 	// TODO: simplify PORTC = (levels[0] | (levels[1]<<3)) | BTN0 | BTN1;
 	// TODO: enforce limits on register values
@@ -151,7 +146,6 @@ int main(void) {
 	// TODO: make PWM frequency configurable
 	// TODO: make slave address configurable
 	// TODO: make comm parameters configurable
-	// TODO: move some things to a header file
 	// TODO: button debouncing (idelly non-blocking)
 	// TODO: add reset button (factory defaults)
 	while(1) {

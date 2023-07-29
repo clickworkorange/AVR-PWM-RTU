@@ -2,7 +2,7 @@
 import minimalmodbus
 import time
 
-instrument = minimalmodbus.Instrument("/dev/pts/5", 1)  # port name, slave address (in decimal)
+instrument = minimalmodbus.Instrument("/dev/pts/7", 1)  # port name, slave address (in decimal)
 instrument.serial.baudrate = 9600
 instrument.serial.timeout = 2
 
