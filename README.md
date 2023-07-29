@@ -10,7 +10,7 @@ A Modbus and push-button controlled 4-channel PWM generator based on the Atmel A
 *N.b. this is very much work in progress and many planned features are yet to be implemented - see <a href="#goals">goals</a>.*
 
 ### Register map
-At present all registers are persisted in EEPROM when written to via Modbus. Channel levels set via push-buttons do not persist. 
+Putting a 1 into the last register (currently 50) will trigger a write to EEPROM of all register values. 
 
 ![Registers](https://raw.githubusercontent.com/clickworkorange/Atmel-PWM-RTU/main/Registers.png)
 
@@ -21,7 +21,6 @@ Included is a Simulide project which runs the Atmel C code and simulates the con
 
 ### Goals
 * Design the full circuit and create PCB layouts in KiCAD
-* Trigger EEPROM writes with a "save parameters" Modbus register 
 * Enforce limits on register values and validate input parameters
 * Make slave address & comms parameters settable through Modbus registers
 * Incorporate a reset button to return the EEPROM to factory defaults
