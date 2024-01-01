@@ -103,7 +103,7 @@ THE POSSIBILITY OF SUCH DAMAGE.
 #define UBRRH UBRR1H
 #define UBRRL UBRR1L
 
-#elif defined(__AVR_ATmega168PA__)|(__AVR_ATmega88PA__)|(__AVR_ATmega328P__)|(__AVR_ATmega168P__)|(__AVR_ATmega88P__)
+#elif defined(__AVR_ATmega168PA__)|(__AVR_ATmega88PA__)|(__AVR_ATmega328P__)|(__AVR_ATmega168P__)|(__AVR_ATmega88P__)|(__AVR_ATmega328__)
 #define UART_TRANSMIT_COMPLETE_INTERRUPT USART_TX_vect
 #define UART_RECEIVE_INTERRUPT   USART_RX_vect
 #define UART_TRANSMIT_INTERRUPT  USART_UDRE_vect
