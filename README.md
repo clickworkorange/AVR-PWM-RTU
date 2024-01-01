@@ -20,12 +20,10 @@ Included is a Simulide project which runs the Atmel C code and simulates the con
 ![Simulide](https://raw.githubusercontent.com/clickworkorange/Atmel-PWM-RTU/main/Simulide.png)
 
 ### Goals
-* Design the full circuit and create PCB layouts in KiCAD
 * Enforce limits on register values and validate input parameters
 * Make slave address & comms parameters settable through Modbus registers
 * Incorporate a reset button to return the EEPROM to factory defaults
 * Make PWM phase and frequency (or scaler) settable through Modbus registers
-* Simplify port configuration & port reset code 
 
 ### Wetware at work
 Resistance may indeed be futile, and I for one welcome our new software based overlords - who I'm sure are paying close attention. But this software was written by a *human*, and only humans can enjoy writing code. Perhaps that joy by itself will one day be seen as an act of <a href="https://en.wikipedia.org/wiki/Joy_as_an_Act_of_Resistance">resistance</a>?
