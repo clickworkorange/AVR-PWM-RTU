@@ -1,7 +1,8 @@
 - <a href="#description">Description</a>
 - <a href="#register-map">Register map</a>
-- <a href="#goals">Goals</a>
+- <a href="#schematic">Schematic</a>
 - <a href="#simulation">Simulation</a>
+- <a href="#goals">Goals</a>
 - <a href="#wetware-at-work">Wetware at work</a>
 
 ### Description
@@ -14,12 +15,17 @@ Putting a 1 into the last register (currently 50) will trigger a write to EEPROM
 
 ![Registers](https://raw.githubusercontent.com/clickworkorange/Atmel-PWM-RTU/main/Registers.png)
 
+### Schematic
+A KiCAD schematic can be found in the /AVR-PWM-RTU folder.
+![Schematic](https://raw.githubusercontent.com/clickworkorange/Atmel-PWM-RTU/main/Schematic.png)
+
 ### Simulation
 Included is a Simulide project which runs the Atmel C code and simulates the control panels: 
 
 ![Simulide](https://raw.githubusercontent.com/clickworkorange/Atmel-PWM-RTU/main/Simulide.png)
 
 ### Goals
+* Design a PCB from the KiCAD schematic
 * Enforce limits on register values and validate input parameters
 * Make slave address & comms parameters settable through Modbus registers
 * Incorporate a reset button to return the EEPROM to factory defaults
