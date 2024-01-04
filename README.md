@@ -40,7 +40,7 @@ Register|Function|Value
 50|Save Settings|0/1
 
 ### AVR pin map
-Only a sinlge i/o (PD4) remains unused. 
+Only a sinlge i/o pin (PD4) remains unused. 
 
 Pin|Port|Function
 ---|----|----------
