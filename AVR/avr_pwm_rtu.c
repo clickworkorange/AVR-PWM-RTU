@@ -12,22 +12,18 @@
 
 */
 
-// set fuses with 
-// sudo avrdude -p atmega328 -P usb -c dragon_isp -v -U lfuse:w:0xff:m -U hfuse:w:0xd1:m -U efuse:w:0xff:m 
-// 8MHz ext. crystal, no divide by 8, preserve EEPROM 
-
 #include <avr/io.h>
 #include <avr/interrupt.h>
 #include <avr/wdt.h>
 #include <avr/eeprom.h>
-#include <util/atomic.h>
 #include "avr_pwm_rtu.h"
 #include "yaMBSiavr.h"
 
 volatile uint8_t instate = 0;
 volatile uint8_t outstate = 0;
-volatile uint16_t EEMEM eeprom[REGSIZE];
-volatile uint16_t registers[REGSIZE];
+volatile uint16_t rxreg, rxval, rxcnt; 
+volatile uint16_t EEMEM eeprom[REGCOUNT];
+volatile uint16_t registers[REGCOUNT];
 
 static uint8_t const BTN0 = 0b00000100; //PORTC
 static uint8_t const BTN1 = 0b00100000; //PORTC
@@ -47,13 +43,14 @@ static uint8_t const PWM3 = 0b00001000; //PORTD
 #define OUT(port, led, level) (port ^= (port ^ level) & (led));
 
 void loadRegisters(void) {
-	read_register_array(eeprom, registers, REGSIZE * 2);
+	read_register_array(eeprom, registers, REGCOUNT * 2);
 }
+
 void saveRegisters(void) {
-	if(registers[REGSIZE-1] == 1) {
+	if(registers[REGCOUNT-1] == 1) {
 		// the last register is the save flag, reset it
-		registers[REGSIZE-1] = 0;
-		write_register_array(eeprom, registers, REGSIZE * 2);
+		registers[REGCOUNT-1] = 0;
+		write_register_array(eeprom, registers, REGCOUNT * 2);
 	}
 }
 
@@ -120,25 +117,54 @@ void updateLevels(void) {
 }
 
 void incrChannel(uint8_t channel) {
-	uint8_t new_level = (registers[channel] + 1) % 4;
-	setLevel(channel, new_level);
+	setLevel(channel, (registers[channel] + 1) % LEVELS);
+}
+
+int validate(uint16_t reg, uint16_t val) {
+	if(val < (1<<REGSIZE[reg])) {
+		// check if register is read only
+		return REGSIZE[reg] != 0; 
+	} else {
+		return 0;
+	}
 }
 
 void modbusGet(void) {
 	if (modbusGetBusState() & (1<<ReceiveCompleted)) {
 		switch(rxbuffer[1]) {
-			case fcReadHoldingRegisters:
-				modbusExchangeRegisters(registers,0,REGSIZE);
-			break;
-			case fcPresetSingleRegister: // fall through
-			case fcPresetMultipleRegisters:
-				modbusExchangeRegisters(registers,0,REGSIZE);
+			case fcReadHoldingRegisters: {
+				modbusExchangeRegisters(registers,0,REGCOUNT);
+				break;
+			}
+			case fcPresetSingleRegister: {
+				rxreg = (rxbuffer[2]<<8) | rxbuffer[3];
+				rxval = (rxbuffer[4]<<8) | rxbuffer[5];
+				if(validate(rxreg, rxval) == 0) {
+					modbusSendException(ecIllegalDataValue);
+				}
+				modbusExchangeRegisters(registers,0,REGCOUNT);
 				updateLevels();
 				saveRegisters();
-			break;
+				break;
+			}
+			case fcPresetMultipleRegisters: {
+				rxreg = (rxbuffer[2]<<8) | rxbuffer[3];
+				rxcnt = (rxbuffer[4]<<8) | rxbuffer[5];
+				for(int i = 0; i < rxcnt; i+=2) {
+					rxval = (rxbuffer[7+i]<<8) | rxbuffer[8+i];
+					if(validate(rxreg+i, rxval) == 0) {
+						modbusSendException(ecIllegalDataValue);
+						break;
+					} 
+				}
+				modbusExchangeRegisters(registers,0,REGCOUNT);
+				updateLevels();
+				saveRegisters();
+				break;
+			}
 			default:
 				modbusSendException(ecIllegalFunction);
-			break;
+				break;
 		}
 	}
 }
@@ -152,12 +178,10 @@ int main(void) {
 	wdt_enable(7);
 	updateLevels();
 
-	// TODO: enforce limits on register values
 	// TODO: make PWM phase configurable
 	// TODO: make PWM frequency configurable
 	// TODO: make slave address configurable
 	// TODO: make comm parameters configurable
-	// TODO: button debouncing (ideally non-blocking)
 	// TODO: add reset button (factory defaults)
 	while(1) {
 		wdt_reset();
