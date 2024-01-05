@@ -74,7 +74,7 @@ Pin|Port|Function
 28|PC5|Btn #1
 
 ### Schematic
-A KiCAD schematic can be found in the /AVR-PWM-RTU folder. This is still work in progress. 
+A schematic can be found in the KiCAD folder. This is still work in progress. 
 
 ![Schematic](https://raw.githubusercontent.com/clickworkorange/Atmel-PWM-RTU/main/Schematic.png)
 
