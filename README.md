@@ -80,12 +80,12 @@ It's important to pick a system clock frequency that results in the desired PWM 
 Xtal|1|8|64|256|1024
 ------------|--------|--------|--------|--------|--------|
 2.0000 MHz|7.8 kHz|980 Hz|123 Hz|31 Hz|8 Hz
-*3.6864 MHz*|14.5 kHz|1.8 kHz|226 Hz|56 Hz|14 Hz
+**3.6864 MHz**|14.5 kHz|1.8 kHz|226 Hz|56 Hz|14 Hz
 4.0000 MHz|15.7 kHz|2.0 kHz|245 Hz|61 Hz|15 Hz
-*7.3728 MHz*|28.9 kHz|3.6 kHz|452 Hz|113 Hz|28 Hz
+**7.3728 MHz**|28.9 kHz|3.6 kHz|452 Hz|113 Hz|28 Hz
 8.0000 MHz|31.4 kHz|3.9 kHz|490 Hz|123 Hz|31 Hz
 16.0000 MHz|62.7 kHz|7.8 kHz|980 Hz|245 Hz|61 Hz
-*18.4320 MHz*|72.3 kHz|9.0 kHz|1.1 kHz|282 Hz|71 Hz
+**18.4320 MHz**|72.3 kHz|9.0 kHz|1.1 kHz|282 Hz|71 Hz
 20.0000 MHz|78.4 kHz|9.8 kHz|1.2 kHz|306 Hz|77 Hz
 
 
