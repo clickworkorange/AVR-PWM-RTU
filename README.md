@@ -13,7 +13,7 @@ A Modbus and push-button controlled 4-channel PWM generator based on the Atmel A
 *N.b. this is very much work in progress and many planned features are yet to be implemented - see <a href="#goals">goals</a>.*
 
 ### Register map
-Writing a 1 to the last register (currently 50) will trigger a write to EEPROM of all register values. 
+Modbus register values are limited to a maximum value for each register; attempting to write a higher value than what is permitted for a given register will return a 03 ILLEGAL DATA VALUE response from the RTU. The same will happen when trying to write to a read only register. Writing a 1 to the last register (currently 50) will trigger a save to EEPROM of all register values - the RTU will revert to these stored values on reboot. 
 
 Register|Function|Value
 --------|----------|-----
