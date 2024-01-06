@@ -43,36 +43,22 @@ Register|Function|Value
 ### AVR pin map
 Only a sinlge i/o pin (PD4) remains unused. 
 
-Pin|Port|Function
----|----|----------
-1|PC6|Reset
-2|PD0|RxD
-3|PD1|TxD
-4|PD2|Data Dir
-5|PD3|PWM #3
-6|PD4|n/c
-7|Vcc|+5V
-8|GND|GND
-9|PB6|Xtal
-10|PB7|Xtal
-11|PD5|Btn #2
-12|PD6|Lvl #2 LSB
-13|PD7|Lvl #2 MSB
-14|PB0|Btn #3
-15|PB1|PWM #0
-16|PB2|PWM #1
-17|PB3|PWM #2
-18|PB4|Lvl #3 LSB
-19|PB5|Lvl #3 MSB
-20|AVCC|+5V
-21|AREF|n/c
-22|GND|GND
-23|PC0|Lvl #0 LSB
-24|PC1|Lvl #0 MSB
-25|PC2|Btn #0
-26|PC3|Lvl #1 LSB
-27|PC4|Lvl #1 MSB
-28|PC5|Btn #1
+Pin|Port|Function| |Pin|Port|Function
+---|----|--------|-|---|----|--------
+1|PC6|Reset| |15|PB1|PWM #0
+2|PD0|RxD| |16|PB2|PWM #1
+3|PD1|TxD| |17|PB3|PWM #2
+4|PD2|Data Dir| |18|PB4|Lvl #3 LSB
+5|PD3|PWM #3| |19|PB5|Lvl #3 MSB
+6|PD4|Free!| |20|AVCC|+5V
+7|Vcc|+5V| |21|AREF|n/c
+8|GND|GND| |22|GND|GND
+9|PB6|Xtal| |23|PC0|Lvl #0 LSB
+10|PB7|Xtal| |24|PC1|Lvl #0 MSB
+11|PD5|Btn #2| |25|PC2|Btn #0
+12|PD6|Lvl #2 LSB| |26|PC3|Lvl #1 LSB
+13|PD7|Lvl #2 MSB| |27|PC4|Lvl #1 MSB
+14|PB0|Btn #3| |28|PC5|Btn #1
 
 ### Crystal selection
 It's important to pick a system clock frequency that results in the desired PWM frequency for your particular application. If you are controlling fans or other motor driven devices you'll probably want this to be outside human hearing range, if it's lights you'll want it to be high enough for persistence of vision to hide the flicker. Another consideration is the Baud-rate error that will result from choosing a system clock that is not evenly divisible by the desired communication speed. The table below shows the available PWM frequencies for a given clock and prescaler, with Baud-rate compatible clock speeds highlighted in bold: 
