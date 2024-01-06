@@ -1,6 +1,7 @@
 - <a href="#description">Description</a>
 - <a href="#register-map">Register map</a>
 - <a href="#avr-pin-map">AVR pin map</a>
+- <a href="#crystal-selection">Crystal selection</a>
 - <a href="#schematic">Schematic</a>
 - <a href="#simulation">Simulation</a>
 - <a href="#goals">Goals</a>
@@ -72,6 +73,21 @@ Pin|Port|Function
 26|PC3|Lvl #1 LSB
 27|PC4|Lvl #1 MSB
 28|PC5|Btn #1
+
+### Crystal selection
+It's important to pick a system clock frequency that results in the desired PWM frequency for the particular application. If you are controlling fans or other motor driven devices you'll probably want this to be outside human hearing range, if it's lights you'll want it to be high enough for persistence of vision to hide the flicker. Another consideration is the Baud-rate error that will result from choosing a system clock that is not evenly divisible by the desired communication speed. This table shows the available PWM frequencies for a given clock and prescaler, with Baud-rate compatible speeds highlighted in bold: 
+
+Xtal|1|8|64|256|1024
+------------|--------|--------|--------|--------|--------|
+2.0000 MHz|7.8 kHz|980 Hz|123 Hz|31 Hz|8 Hz
+*3.6864 MHz*|14.5 kHz|1.8 kHz|226 Hz|56 Hz|14 Hz
+4.0000 MHz|15.7 kHz|2.0 kHz|245 Hz|61 Hz|15 Hz
+*7.3728 MHz*|28.9 kHz|3.6 kHz|452 Hz|113 Hz|28 Hz
+8.0000 MHz|31.4 kHz|3.9 kHz|490 Hz|123 Hz|31 Hz
+16.0000 MHz|62.7 kHz|7.8 kHz|980 Hz|245 Hz|61 Hz
+*18.4320 MHz*|72.3 kHz|9.0 kHz|1.1 kHz|282 Hz|71 Hz
+20.0000 MHz|78.4 kHz|9.8 kHz|1.2 kHz|306 Hz|77 Hz
+
 
 ### Schematic
 A schematic can be found in the KiCAD folder. This is still work in progress. 
