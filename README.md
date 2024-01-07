@@ -1,16 +1,17 @@
 - <a href="#description">Description</a>
 - <a href="#register-map">Register map</a>
 - <a href="#avr-pin-map">AVR pin map</a>
+- <a href="#defaults">Defaults</a>
 - <a href="#crystal-selection">Crystal selection</a>
 - <a href="#schematic">Schematic</a>
 - <a href="#simulation">Simulation</a>
-- <a href="#goals">Goals</a>
+- <a href="#future">Future</a>
 - <a href="#wetware-at-work">Wetware at work</a>
 
 ### Description
 A Modbus and push-button controlled 4-channel PWM generator based on the Atmel ATMega 328. Each channel can be set to one of four pre-defined duty cycles (0-255). In addition to being controllable by Modbus commands, the channel levels (0-3) can also be selected by means of individual push-buttons, wich increment a channel's level, wrapping at 3. The active level for each channel is output as a 2-bit value which is used to drive a set of four LEDs by means of a 74HC138 decoder. The idea is to allow for remote control of the individual channels over a three-wire interface (plus GND and VCC). The Modbus communication layer is provided by the <a href="https://github.com/mbs38/yaMBSiavr">yaMBSiavr</a> library. The code compiles to 8.7kB. 
 
-*N.b. this is very much work in progress and many planned features are yet to be implemented - see <a href="#goals">goals</a>.*
+*N.b. this is very much work in progress and some features are yet to be implemented - see <a href="#future">future</a>.*
 
 ### Register map
 Modbus register values are limited to a maximum value for each register; attempting to write a higher value than what is permitted for a given register will return a 03 ILLEGAL DATA VALUE response from the RTU. The same will happen if you try to write to a read only register. Writing a 1 to the last register (currently 50) will trigger a save to EEPROM of all register values - the RTU will revert to these stored values on reboot. 
@@ -38,42 +39,75 @@ Register|Function|Value
 18|Ch3 Duty 2|0-255
 19|Ch3 Duty 3|0-255
 .|...|.
+21|Ch0 & Ch1 Scaler|0-7*
+.|...|.
+23|Ch2 & Ch3 Scaler|0-7*
+.|...|.
+44|Slave Address|0-255
+.|...|.
 50|Save Settings|0/1
 
+*) See the below table for the meaning of these values:
+
+**Value**|0|1|2|3|4|5|6|7
+-----|----|----|----|----|----|----|----|----
+**Scaler**|0|1|8|32|64|128|256|1024
+
+Setting either of the scaler registers to zero disables those two channels. See <a href="#crystal-selection">Crystal selection</a> for the frequencies resulting from the different prescalers. 
+
 ### AVR pin map
-Only a sinlge i/o pin (PD4) remains unused. 
 
 Pin|Port|Function| |Pin|Port|Function
----|----|--------|-|---|----|--------
-1|PC6|Reset| |15|PB1|PWM #0
-2|PD0|RxD| |16|PB2|PWM #1
-3|PD1|TxD| |17|PB3|PWM #2
-4|PD2|Data Dir| |18|PB4|Lvl #3 LSB
-5|PD3|PWM #3| |19|PB5|Lvl #3 MSB
-6|PD4|Free!| |20|AVCC|+5V
+---|----|-------------|-|---|----|-------------
+1|PC6|Reset| |15|PB1|Ch0 PWM
+2|PD0|RxD| |16|PB2|Ch1 PWM
+3|PD1|TxD| |17|PB3|Ch2 PWM
+4|PD2|Data Dir| |18|PB4|Ch3 Lvl LSB
+5|PD3|Ch3 PWM| |19|PB5|Ch3 Lvl MSB
+6|PD4|Load Defaults| |20|AVCC|+5V
 7|Vcc|+5V| |21|AREF|n/c
 8|GND|GND| |22|GND|GND
-9|PB6|Xtal| |23|PC0|Lvl #0 LSB
-10|PB7|Xtal| |24|PC1|Lvl #0 MSB
-11|PD5|Btn #2| |25|PC2|Btn #0
-12|PD6|Lvl #2 LSB| |26|PC3|Lvl #1 LSB
-13|PD7|Lvl #2 MSB| |27|PC4|Lvl #1 MSB
-14|PB0|Btn #3| |28|PC5|Btn #1
+9|PB6|Xtal| |23|PC0|Ch0 Lvl LSB
+10|PB7|Xtal| |24|PC1|Ch0 Lvl MSB
+11|PD5|Ch2 Btn| |25|PC2|Ch0 Btn
+12|PD6|Ch2 Lvl LSB| |26|PC3|Ch1 Lvl LSB
+13|PD7|Ch2 Lvl MSB| |27|PC4|Ch1 Lvl MSB
+14|PB0|Ch3 Btn| |28|PC5|Ch1 Btn
+
+### Defaults
+The default configuration values are: 
+
+- Channel levels all set to 0
+- Duty values for levels (all channels)
+	0: 255
+	1: 127
+	2: 63
+	3: 0
+- Both scaler registers set to 4 (490 Hz @ 8 MHz)
+- Communication parameters
+	Slave ID: 1
+	Baud: 9600
+	Parity: None
+	Stop bits: 1
+
+The RTU can be reset to these values by holding PD4 low on power on / reset. 
+
 
 ### Crystal selection
 It's important to pick a system clock frequency that results in the desired PWM frequency for your particular application. If you are controlling fans or other motor driven devices you'll probably want this to be outside human hearing range, if it's lights you'll want it to be high enough for persistence of vision to hide the flicker. Another consideration is the Baud-rate error that will result from choosing a system clock that is not evenly divisible by the desired communication speed. The table below shows the available PWM frequencies for a given clock and prescaler, with Baud-rate compatible clock speeds highlighted in bold: 
 
-Xtal|1|8|64|256|1024
-------------|--------|--------|--------|--------|--------|
-2.0000 MHz|7.8 kHz|980 Hz|123 Hz|31 Hz|8 Hz
-**3.6864 MHz**|14.5 kHz|1.8 kHz|226 Hz|56 Hz|14 Hz
-4.0000 MHz|15.7 kHz|2.0 kHz|245 Hz|61 Hz|15 Hz
-**7.3728 MHz**|28.9 kHz|3.6 kHz|452 Hz|113 Hz|28 Hz
-8.0000 MHz|31.4 kHz|3.9 kHz|490 Hz|123 Hz|31 Hz
-16.0000 MHz|62.7 kHz|7.8 kHz|980 Hz|245 Hz|61 Hz
-**18.4320 MHz**|72.3 kHz|9.0 kHz|1.1 kHz|282 Hz|71 Hz
-20.0000 MHz|78.4 kHz|9.8 kHz|1.2 kHz|306 Hz|77 Hz
+Xtal|1|8|32*|64|128*|256|1024
+-----------|--------|--------|--------|--------|--------|--------|--------|
+2.0000 MHz|7.8 kHz|980 Hz|245 Hz|123 Hz|61 Hz|31 Hz|8 Hz
+**3.6864 MHz**|14.5 kHz|1.8 kHz|452 Hz|226 Hz|113 Hz|56 Hz|14 Hz
+4.0000 MHz|15.7 kHz|2.0 kHz|490 Hz|245 Hz|123 Hz|61 Hz|15 Hz
+**7.3728 MHz**|28.9 kHz|3.6 kHz|904 Hz|452 Hz|226 Hz|113 Hz|28 Hz
+8.0000 MHz|31.4 kHz|3.9 kHz|980 Hz|490 Hz|245 Hz|123 Hz|31 Hz
+16.0000 MHz|62.7 kHz|7.8 kHz|2.0 kHz|980 Hz|490 Hz|245 Hz|61 Hz
+**18.4320 MHz**|72.3 kHz|9.0 kHz|2.3 kHz|1.1 kHz|565 Hz|282 Hz|71 Hz
+20.0000 MHz|78.4 kHz|9.8 kHz|2.5 kHz|1.2 kHz|613 Hz|306 Hz|77 Hz
 
+*) Prescalers 32 & 128 are not available on Timer1, but we get these by changing the TOP length to 10-bits and 9-bits respectively, and scaling the 0-255 duty value accordingly. 
 
 ### Schematic
 A schematic can be found in the KiCAD folder. This is still work in progress. 
@@ -85,11 +119,18 @@ Included is a Simulide project which runs the Atmel C code and simulates the con
 
 ![Simulide](https://raw.githubusercontent.com/clickworkorange/Atmel-PWM-RTU/main/Simulide.png)
 
-### Goals
-* Finish KiCAD schematic and design a PCB from it
-* Make slave address & comms parameters settable through Modbus registers
-* Incorporate a reset button to return the EEPROM to factory defaults
-* Make PWM phase and frequency (or scaler) settable through Modbus registers
+### Future
+#### Must:
+* Make PWM phase and scaler settable through Modbus registers.
+#### Should:
+* Make comms parameters settable through Modbus registers.
+* Finish KiCAD schematic and design a PCB from it.
+#### Could:
+* Make the PCB fit in a DIN-rail enclosure.
+* Add additional functions for long-press and double-clicks.
+#### Won't:
+* Make PWM frequency variable.
+* Replace Modbus with a different protocol. 
 
 ### Wetware at work
 Resistance may indeed be futile, and I for one welcome our new data-based overlords - who I'm sure are paying close attention. But this software was written by a *human*, and only humans can enjoy writing code. Perhaps that joy by itself will one day be seen as an act of <a href="https://en.wikipedia.org/wiki/Joy_as_an_Act_of_Resistance">resistance</a>?
