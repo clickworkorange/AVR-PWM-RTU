@@ -88,8 +88,8 @@ The default configuration values are:
 	- Parity: None
 	- Stop bits: 1
  - Identification strings
- 	- Unit: "PWM-1"
-  	- Channels: "Ch0", "Ch1", "Ch2", "Ch3"
+ 	- Device ID: "PWM-1"
+  	- Channel IDs: "Ch0", "Ch1", "Ch2", "Ch3"
 
 The RTU can be reset to these values at any time by holding PD4 low on power on / reset. 
 
