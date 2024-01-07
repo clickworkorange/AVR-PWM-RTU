@@ -39,6 +39,8 @@ Register|Function|Value
 18|Ch3 Duty 2|0-255
 19|Ch3 Duty 3|0-255
 .|...|.
+44|Slave Address|0-255
+.|...|.
 50|Save Settings|0/1
 
 ### AVR pin map
@@ -105,7 +107,7 @@ Included is a Simulide project which runs the Atmel C code and simulates the con
 
 ### Goals
 * Finish KiCAD schematic and design a PCB from it
-* Make slave address & comms parameters settable through Modbus registers
+* Make comms parameters settable through Modbus registers
 * Make PWM phase and frequency (or scaler) settable through Modbus registers
 
 ### Wetware at work
