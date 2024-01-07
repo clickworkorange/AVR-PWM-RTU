@@ -83,6 +83,7 @@ The default configuration values are:
 	1: 127
 	2: 63
 	3: 0
+- Both scaler registers set to 4 (490 Hz @ 8 MHz)
 - Communication parameters
 	Slave ID: 1
 	Baud: 9600
