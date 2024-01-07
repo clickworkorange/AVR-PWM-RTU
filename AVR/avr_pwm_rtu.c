@@ -3,7 +3,7 @@
             (o o)
  +-------oOO-{_}-OOo--------+
  |                          |
- |   © 2023 Ola Tuvesson    |
+ |   © 2024 Ola Tuvesson    |
  |   clickworkorange Ltd    |
  |                          |
  | info@clickworkorange.com |
@@ -44,6 +44,12 @@ static uint8_t const PWM1 = 0b00000100; //PORTB
 static uint8_t const PWM2 = 0b00001000; //PORTB
 static uint8_t const PWM3 = 0b00001000; //PORTD
 
+// TODO: this could be more readable... 
+static uint8_t const T1WG[] = {0,_BV(WGM10),_BV(WGM10),_BV(WGM10)|_BV(WGM11),_BV(WGM10),_BV(WGM11),_BV(WGM10),_BV(WGM10)};
+static uint8_t const T2WG[] = {0,_BV(WGM20)|_BV(WGM21),_BV(WGM20)|_BV(WGM21),_BV(WGM20)|_BV(WGM21),_BV(WGM20)|_BV(WGM21),_BV(WGM20)|_BV(WGM21),_BV(WGM20)|_BV(WGM21),_BV(WGM20)|_BV(WGM21)};
+static uint8_t const T1CS[] = {0,_BV(CS10),_BV(CS11),_BV(CS11),_BV(CS10)|_BV(CS11),_BV(CS10)|_BV(CS11),_BV(CS12),_BV(CS10)|_BV(CS12)};
+static uint8_t const T2CS[] = {0,_BV(CS20),_BV(CS21),_BV(CS20)|_BV(CS21),_BV(CS22),_BV(CS20)|_BV(CS22),_BV(CS21)|_BV(CS22),_BV(CS20)|_BV(CS21)|_BV(CS22)};
+
 #define OUT(port, led, level) (port ^= (port ^ level) & (led));
 
 void loadRegisters(void) {
@@ -83,41 +89,58 @@ void pinSetup(void) {
 }
 
 void comSetup(void) {
-	modbusSetAddress(0x01);
+	modbusSetAddress(registers[44]);
 }
 
 void clockSetup(void) {
-	// UART clock on timer0
+	// UART clock on Timer0
 	TCCR0B = _BV(CS01); // prescaler 8
 	TIMSK0 = _BV(TOIE0); // enable overflow interrupt
 
-	// timer1 (on B1,B2)
-	TCCR1A = _BV(COM1A1) | _BV(COM1B1) | _BV(WGM10);
-	TCCR1B = _BV(CS10) | _BV(WGM12); 
+	// Timer1 (on B1,B2)
+	TCCR1A = _BV(COM1A1) | _BV(COM1B1) | T1WG[registers[21]];
+	TCCR1B = _BV(WGM12) | T1CS[registers[21]];
 
-	// timer2 (on B3,D3)
-	TCCR2A = _BV(COM2A1) | _BV(COM2B1) | _BV(WGM20) | _BV(WGM21);
-	TCCR2B = _BV(CS20);
+	// Timer2 (on B3,D3)
+	TCCR2A = _BV(COM2A1) | _BV(COM2B1) | T2WG[registers[23]];
+	TCCR2B = T2CS[registers[23]];
 }
 
 ISR(TIMER0_OVF_vect) { 
 	modbusTickTimer();
 }
 
+int timerOneLength(int duty) {
+	// adjust Timer1 duty for TOP length
+	if(TCCR1A & _BV(WGM11)) {
+		if(TCCR1A & _BV(WGM10)) {
+			// 10-bits (e.g. 127 = 511)
+			return duty<<2;
+		} else {
+			// 9-bits (e.g. 127 = 255)
+			return duty<<1;
+		}
+	} else {
+		// 8-bits (no change)
+		return duty;
+	}
+}
+
 void setLevel(uint8_t channel, uint8_t level) {
 	registers[channel] = level;
 	switch(channel) {
 		case 0:
-			OCR1A = registers[4 + level];
+			OCR1A = timerOneLength(registers[4 + level]);
 			OUT(PORTC, LED0, registers[0]);
 		break;
 		case 1:
-			OCR1B = registers[8 + level];
+			OCR1B = timerOneLength(registers[8 + level]);
 			OUT(PORTC, LED1, registers[1]<<3);
 		break;
 		case 2:
 			OCR2A = registers[12 + level];
 			ATOMIC_BLOCK(ATOMIC_FORCEON) {
+				// protect PORTD writes from interrupts
 				OUT(PORTD, LED2, registers[2]<<6);
 			}
 		break;
@@ -200,7 +223,6 @@ int main(void) {
 
 	// TODO: make PWM phase configurable
 	// TODO: make PWM frequency configurable
-	// TODO: make slave address configurable
 	// TODO: make comm parameters configurable
 	while(1) {
 		wdt_reset();
