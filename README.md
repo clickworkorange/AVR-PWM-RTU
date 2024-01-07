@@ -38,9 +38,9 @@ Modbus register values are limited to a maximum value for each register; attempt
 17|Ch3 Duty 1|0-255| |43|Ch3 ID 6-7|2 bytes
 18|Ch3 Duty 2|0-255| |44|Slave Address|0-255
 19|Ch3 Duty 3|0-255| |45|Baud Rate|0-7
-20|Ch0-1 Phase|0-1| |46|Parity|0-2
+20|Ch0-1 Invert|0-1| |46|Parity|0-2
 21|Ch0-1 Scaler|0-7*| |47|Stop Bits|0-1
-22|Ch2-3 Phase|0-1| |48|Firmware Revision|-
+22|Ch2-3 Invert|0-1| |48|Firmware Revision|-
 23|Ch2-3 Scaler|0-7*| |49|*Reserved*|
 24|Device ID 0-1|2 bytes| |50|Save Settings|1
 25|Device ID 2-3|2 bytes| | | |
@@ -121,9 +121,8 @@ Included is a Simulide project which runs the Atmel C code and simulates the con
 
 ### Future
 #### Must:
-* Make PWM phase settable through Modbus registers.
-#### Should:
 * Make comms parameters settable through Modbus registers.
+#### Should:
 * Finish KiCAD schematic and design a PCB from it.
 #### Could:
 * Apply PWM frequency scalers without reboot. 
