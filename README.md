@@ -89,8 +89,11 @@ The default configuration values are:
 	- Baud: 9600
 	- Parity: None
 	- Stop bits: 1
+ - Identification strings
+ 	- Unit: "PWM-1"
+  	- Channels: "Ch0", "Ch1", "Ch2", "Ch3"
 
-The RTU can be reset to these values by holding PD4 low on power on / reset. 
+The RTU can be reset to these values at any time by holding PD4 low on power on / reset. 
 
 ### Crystal selection
 It's important to pick a system clock frequency that results in the desired PWM frequency for your particular application. If you are controlling fans or other motor driven devices you'll probably want this to be outside human hearing range, if it's lights you'll want it to be high enough for persistence of vision to hide the flicker. Another consideration is the Baud-rate error that will result from choosing a system clock that is not evenly divisible by the desired communication speed. The table below shows the available PWM frequencies for a given clock and prescaler, with Baud-rate compatible clock speeds highlighted in bold: 
