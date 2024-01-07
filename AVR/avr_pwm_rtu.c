@@ -12,23 +12,27 @@
 
 */
 
+#include <string.h>
 #include <avr/io.h>
 #include <avr/interrupt.h>
 #include <avr/wdt.h>
 #include <avr/eeprom.h>
+#include <util/atomic.h>
 #include "avr_pwm_rtu.h"
 #include "yaMBSiavr.h"
 
 volatile uint8_t instate = 0;
 volatile uint8_t outstate = 0;
-volatile uint16_t rxreg, rxval, rxcnt; 
 volatile uint16_t EEMEM eeprom[REGCOUNT];
-volatile uint16_t registers[REGCOUNT];
+
+static uint16_t registers[REGCOUNT];
+static uint16_t rxreg, rxval, rxcnt; 
 
 static uint8_t const BTN0 = 0b00000100; //PORTC
 static uint8_t const BTN1 = 0b00100000; //PORTC
-static uint8_t const BTN2 = 0b00100000; //PORTB
-static uint8_t const BTN3 = 0b00000001; //PORTD
+static uint8_t const BTN2 = 0b00100000; //PORTD
+static uint8_t const BTN3 = 0b00000001; //PORTB
+static uint8_t const BTND = 0b00010000; //PORTD
 
 static uint8_t const LED0 = 0b00000011; //PORTC
 static uint8_t const LED1 = 0b00011000; //PORTC
@@ -54,6 +58,14 @@ void saveRegisters(void) {
 	}
 }
 
+void setDefaults(void) {
+	if((PIND & BTND) == 0) {
+		// if BTND (PD4) is held low, load defaults and save to EEPROM
+		memcpy(registers, DEFAULT, REGCOUNT * 2);
+		saveRegisters();
+	}
+}
+
 void pinSetup(void) { 
 	// output on B4,B5 (LEDs ch3) & B1,B2,B3 (PWM ch0-2)
 	  DDRB = LED3 | PWM0 | PWM1 | PWM2;
@@ -66,20 +78,26 @@ void pinSetup(void) {
 	 PORTB = BTN3;
 	// pull-up on C2,C5 (button inputs ch0 & 1)
 	 PORTC = BTN0 | BTN1;
-	// pull-up on D5 (button input ch2)
-	 PORTD = BTN2;
+	// pull-up on D5,D4 (button inputs ch2 & defaults)
+	 PORTD = BTN2 | BTND;
+}
 
+void comSetup(void) {
+	modbusSetAddress(0x01);
+}
+
+void clockSetup(void) {
 	// UART clock on timer0
 	TCCR0B = _BV(CS01); // prescaler 8
 	TIMSK0 = _BV(TOIE0); // enable overflow interrupt
 
-	// 8-bit Fast PWM on timer1 (on B1,B2) (inverted)
-	TCCR1A = _BV(COM1A1) | _BV(COM1B1) | _BV(WGM10) | _BV(WGM12);
-	TCCR1B = _BV(CS10) | _BV(WGM12); // 31.25 KHz (prescaler 1)
+	// timer1 (on B1,B2)
+	TCCR1A = _BV(COM1A1) | _BV(COM1B1) | _BV(WGM10);
+	TCCR1B = _BV(CS10) | _BV(WGM12); 
 
-	// 8-bit Fast PWM on timer2 (on B3,D3) (inverted)
+	// timer2 (on B3,D3)
 	TCCR2A = _BV(COM2A1) | _BV(COM2B1) | _BV(WGM20) | _BV(WGM21);
-	TCCR2B = _BV(CS20); // 31.25 KHz (prescaler 1)
+	TCCR2B = _BV(CS20);
 }
 
 ISR(TIMER0_OVF_vect) { 
@@ -99,9 +117,9 @@ void setLevel(uint8_t channel, uint8_t level) {
 		break;
 		case 2:
 			OCR2A = registers[12 + level];
-			cli(); // protect PORTD writes from ISR
-			OUT(PORTD, LED2, registers[2]<<6);
-			sei();
+			ATOMIC_BLOCK(ATOMIC_FORCEON) {
+				OUT(PORTD, LED2, registers[2]<<6);
+			}
 		break;
 		case 3:
 			OCR2B = registers[16 + level];
@@ -170,10 +188,12 @@ void modbusGet(void) {
 }
 
 int main(void) {
-	loadRegisters();
 	pinSetup();
+	setDefaults();
+	loadRegisters();
+	clockSetup();
+	comSetup();
 	sei();
-	modbusSetAddress(0x01);
 	modbusInit();
 	wdt_enable(7);
 	updateLevels();
@@ -182,7 +202,6 @@ int main(void) {
 	// TODO: make PWM frequency configurable
 	// TODO: make slave address configurable
 	// TODO: make comm parameters configurable
-	// TODO: add reset button (factory defaults)
 	while(1) {
 		wdt_reset();
 		modbusGet();
