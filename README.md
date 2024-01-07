@@ -121,7 +121,7 @@ Included is a Simulide project which runs the Atmel C code and simulates the con
 
 ### Future
 #### Must:
-* Make PWM phase and scaler settable through Modbus registers.
+* Make PWM phase settable through Modbus registers.
 #### Should:
 * Make comms parameters settable through Modbus registers.
 * Finish KiCAD schematic and design a PCB from it.
