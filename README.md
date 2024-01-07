@@ -1,6 +1,7 @@
 - <a href="#description">Description</a>
 - <a href="#register-map">Register map</a>
 - <a href="#avr-pin-map">AVR pin map</a>
+- <a href="#defaults">Defaults</a>
 - <a href="#crystal-selection">Crystal selection</a>
 - <a href="#schematic">Schematic</a>
 - <a href="#simulation">Simulation</a>
@@ -58,6 +59,24 @@ Pin|Port|Function| |Pin|Port|Function
 12|PD6|Ch2 Lvl LSB| |26|PC3|Ch1 Lvl LSB
 13|PD7|Ch2 Lvl MSB| |27|PC4|Ch1 Lvl MSB
 14|PB0|Ch3 Btn| |28|PC5|Ch1 Btn
+
+### Defaults
+The default configuration values are: 
+
+- Channel levels all set to 0
+- Duty values for levels (all channels)
+	0: 255
+	1: 127
+	2: 63
+	3: 0
+- Communication parameters
+	Slave ID: 1
+	Baud: 9600
+	Parity: None
+	Stop bits: 1
+
+The RTU can be reset to these values by holding PD4 low on power on / reset. 
+
 
 ### Crystal selection
 It's important to pick a system clock frequency that results in the desired PWM frequency for your particular application. If you are controlling fans or other motor driven devices you'll probably want this to be outside human hearing range, if it's lights you'll want it to be high enough for persistence of vision to hide the flicker. Another consideration is the Baud-rate error that will result from choosing a system clock that is not evenly divisible by the desired communication speed. The table below shows the available PWM frequencies for a given clock and prescaler, with Baud-rate compatible clock speeds highlighted in bold: 
