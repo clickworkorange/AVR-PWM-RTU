@@ -42,7 +42,7 @@ Modbus register values are limited to a maximum value for each register; attempt
 21|Ch0-1 Scaler|0-7*| |47|Stop Bits|0-1
 22|Ch2-3 Invert|0-1| |48|Firmware Revision|-
 23|Ch2-3 Scaler|0-7*| |49|*Reserved*|
-24|Device ID 0-1|2 bytes| |50|Save Settings|1
+24|Device ID 0-1|2 bytes| |50|Save Settings|1/0
 25|Device ID 2-3|2 bytes| | | |
 
 *) See the below table for the meaning of these values:
