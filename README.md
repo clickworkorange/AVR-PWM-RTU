@@ -79,16 +79,16 @@ The default configuration values are:
 
 - Channel levels all set to 0
 - Duty values for levels (all channels)
-	0: 255
-	1: 127
-	2: 63
-	3: 0
+	- 0: 255
+	- 1: 127
+	- 2: 63
+	- 3: 0
 - Both scaler registers set to 4 (490 Hz @ 8 MHz)
 - Communication parameters
-	Slave ID: 1
-	Baud: 9600
-	Parity: None
-	Stop bits: 1
+	- Slave ID: 1
+	- Baud: 9600
+	- Parity: None
+	- Stop bits: 1
 
 The RTU can be reset to these values by holding PD4 low on power on / reset. 
 
