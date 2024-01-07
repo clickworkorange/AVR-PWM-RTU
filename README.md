@@ -1,6 +1,7 @@
 - <a href="#description">Description</a>
 - <a href="#register-map">Register map</a>
 - <a href="#avr-pin-map">AVR pin map</a>
+- <a href="#crystal-selection">Crystal selection</a>
 - <a href="#schematic">Schematic</a>
 - <a href="#simulation">Simulation</a>
 - <a href="#goals">Goals</a>
@@ -12,7 +13,7 @@ A Modbus and push-button controlled 4-channel PWM generator based on the Atmel A
 *N.b. this is very much work in progress and many planned features are yet to be implemented - see <a href="#goals">goals</a>.*
 
 ### Register map
-Writing a 1 to the last register (currently 50) will trigger a write to EEPROM of all register values. 
+Modbus register values are limited to a maximum value for each register; attempting to write a higher value than what is permitted for a given register will return a 03 ILLEGAL DATA VALUE response from the RTU. The same will happen if you try to write to a read only register. Writing a 1 to the last register (currently 50) will trigger a save to EEPROM of all register values - the RTU will revert to these stored values on reboot. 
 
 Register|Function|Value
 --------|----------|-----
@@ -42,39 +43,40 @@ Register|Function|Value
 ### AVR pin map
 Only a sinlge i/o pin (PD4) remains unused. 
 
-Pin|Port|Function
----|----|----------
-1|PC6|Reset
-2|PD0|RxD
-3|PD1|TxD
-4|PD2|Data Dir
-5|PD3|PWM #3
-6|PD4|n/c
-7|Vcc|+5V
-8|GND|GND
-9|PB6|Xtal
-10|PB7|Xtal
-11|PD5|Btn #2
-12|PD6|Lvl #2 LSB
-13|PD7|Lvl #2 MSB
-14|PB0|Btn #3
-15|PB1|PWM #0
-16|PB2|PWM #1
-17|PB3|PWM #2
-18|PB4|Lvl #3 LSB
-19|PB5|Lvl #3 MSB
-20|AVCC|+5V
-21|AREF|n/c
-22|GND|GND
-23|PC0|Lvl #0 LSB
-24|PC1|Lvl #0 MSB
-25|PC2|Btn #0
-26|PC3|Lvl #1 LSB
-27|PC4|Lvl #1 MSB
-28|PC5|Btn #1
+Pin|Port|Function| |Pin|Port|Function
+---|----|--------|-|---|----|--------
+1|PC6|Reset| |15|PB1|PWM #0
+2|PD0|RxD| |16|PB2|PWM #1
+3|PD1|TxD| |17|PB3|PWM #2
+4|PD2|Data Dir| |18|PB4|Lvl #3 LSB
+5|PD3|PWM #3| |19|PB5|Lvl #3 MSB
+6|PD4|Free!| |20|AVCC|+5V
+7|Vcc|+5V| |21|AREF|n/c
+8|GND|GND| |22|GND|GND
+9|PB6|Xtal| |23|PC0|Lvl #0 LSB
+10|PB7|Xtal| |24|PC1|Lvl #0 MSB
+11|PD5|Btn #2| |25|PC2|Btn #0
+12|PD6|Lvl #2 LSB| |26|PC3|Lvl #1 LSB
+13|PD7|Lvl #2 MSB| |27|PC4|Lvl #1 MSB
+14|PB0|Btn #3| |28|PC5|Btn #1
+
+### Crystal selection
+It's important to pick a system clock frequency that results in the desired PWM frequency for your particular application. If you are controlling fans or other motor driven devices you'll probably want this to be outside human hearing range, if it's lights you'll want it to be high enough for persistence of vision to hide the flicker. Another consideration is the Baud-rate error that will result from choosing a system clock that is not evenly divisible by the desired communication speed. The table below shows the available PWM frequencies for a given clock and prescaler, with Baud-rate compatible clock speeds highlighted in bold: 
+
+Xtal|1|8|64|256|1024
+------------|--------|--------|--------|--------|--------|
+2.0000 MHz|7.8 kHz|980 Hz|123 Hz|31 Hz|8 Hz
+**3.6864 MHz**|14.5 kHz|1.8 kHz|226 Hz|56 Hz|14 Hz
+4.0000 MHz|15.7 kHz|2.0 kHz|245 Hz|61 Hz|15 Hz
+**7.3728 MHz**|28.9 kHz|3.6 kHz|452 Hz|113 Hz|28 Hz
+8.0000 MHz|31.4 kHz|3.9 kHz|490 Hz|123 Hz|31 Hz
+16.0000 MHz|62.7 kHz|7.8 kHz|980 Hz|245 Hz|61 Hz
+**18.4320 MHz**|72.3 kHz|9.0 kHz|1.1 kHz|282 Hz|71 Hz
+20.0000 MHz|78.4 kHz|9.8 kHz|1.2 kHz|306 Hz|77 Hz
+
 
 ### Schematic
-A KiCAD schematic can be found in the /AVR-PWM-RTU folder. This is still work in progress. 
+A schematic can be found in the KiCAD folder. This is still work in progress. 
 
 ![Schematic](https://raw.githubusercontent.com/clickworkorange/Atmel-PWM-RTU/main/Schematic.png)
 
