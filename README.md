@@ -41,16 +41,15 @@ Register|Function|Value
 50|Save Settings|0/1
 
 ### AVR pin map
-Only a sinlge i/o pin (PD4) remains unused. 
 
 Pin|Port|Function| |Pin|Port|Function
----|----|--------|-|---|----|--------
+---|----|-------------|-|---|----|-------------
 1|PC6|Reset| |15|PB1|PWM #0
 2|PD0|RxD| |16|PB2|PWM #1
 3|PD1|TxD| |17|PB3|PWM #2
 4|PD2|Data Dir| |18|PB4|Lvl #3 LSB
 5|PD3|PWM #3| |19|PB5|Lvl #3 MSB
-6|PD4|Free!| |20|AVCC|+5V
+6|PD4|Load Defaults| |20|AVCC|+5V
 7|Vcc|+5V| |21|AREF|n/c
 8|GND|GND| |22|GND|GND
 9|PB6|Xtal| |23|PC0|Lvl #0 LSB
@@ -88,7 +87,6 @@ Included is a Simulide project which runs the Atmel C code and simulates the con
 ### Goals
 * Finish KiCAD schematic and design a PCB from it
 * Make slave address & comms parameters settable through Modbus registers
-* Incorporate a reset button to return the EEPROM to factory defaults
 * Make PWM phase and frequency (or scaler) settable through Modbus registers
 
 ### Wetware at work
