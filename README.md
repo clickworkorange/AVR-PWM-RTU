@@ -53,7 +53,7 @@ Register|Function|Value
 -----|----|----|----|----|----|----|----|----
 **Scaler**|0|1|8|32|64|128|256|1024
 
-Setting either of the scaler registers to zero disables those two channels. See <a href="#crystal-selection">Crystal selection</a> for the frequencies resulting from the different prescalers. 
+Setting either of the scaler registers to zero disables those two channels. See <a href="#crystal-selection">Crystal selection</a> for the PWM frequencies resulting from the different prescalers. 
 
 ### AVR pin map
 
