@@ -16,36 +16,34 @@ A Modbus and push-button controlled 4-channel PWM generator based on the Atmel A
 ### Register map
 Modbus register values are limited to a maximum value for each register; attempting to write a higher value than what is permitted for a given register will return a 03 ILLEGAL DATA VALUE response from the RTU. The same will happen if you try to write to a read only register. Writing a 1 to the last register (currently 50) will trigger a save to EEPROM of all register values - the RTU will revert to these stored values on reboot. 
 
-Register|Function|Value
---------|----------|-----
-0|Ch0 Level|0-3
-1|Ch1 Level|0-3
-2|Ch2 Level|0-3
-3|Ch3 Level|0-3
-4|Ch0 Duty 0|0-255
-5|Ch0 Duty 1|0-255
-6|Ch0 Duty 2|0-255
-7|Ch0 Duty 3|0-255
-8|Ch1 Duty 0|0-255
-9|Ch1 Duty 1|0-255
-10|Ch1 Duty 2|0-255
-11|Ch1 Duty 3|0-255
-12|Ch2 Duty 0|0-255
-13|Ch2 Duty 1|0-255
-14|Ch2 Duty 2|0-255
-15|Ch2 Duty 3|0-255
-16|Ch3 Duty 0|0-255
-17|Ch3 Duty 1|0-255
-18|Ch3 Duty 2|0-255
-19|Ch3 Duty 3|0-255
-.|...|.
-21|Ch0 & Ch1 Scaler|0-7*
-.|...|.
-23|Ch2 & Ch3 Scaler|0-7*
-.|...|.
-44|Slave Address|0-255
-.|...|.
-50|Save Settings|0/1
+#|Function|Value| |#|Function|Value
+--|-------------|-----|-|--|-------------|-----
+0|Ch0 Level|0-3| |26|Device ID 4-5|2 bytes
+1|Ch1 Level|0-3| |27|Device ID 6-7|2 bytes
+2|Ch2 Level|0-3| |28|Ch0 ID 0-1|2 bytes
+3|Ch3 Level|0-3| |29|Ch0 ID 2-3|2 bytes
+4|Ch0 Duty 0|0-255| |30|Ch0 ID 4-5|2 bytes
+5|Ch0 Duty 1|0-255| |31|Ch0 ID 6-7|2 bytes
+6|Ch0 Duty 2|0-255| |32|Ch1 ID 0-1|2 bytes
+7|Ch0 Duty 3|0-255| |33|Ch1 ID 2-3|2 bytes
+8|Ch1 Duty 0|0-255| |34|Ch1 ID 4-5|2 bytes
+9|Ch1 Duty 1|0-255| |35|Ch1 ID 6-7|2 bytes
+10|Ch1 Duty 2|0-255| |36|Ch2 ID 0-1|2 bytes
+11|Ch1 Duty 3|0-255| |37|Ch2 ID 2-3|2 bytes
+12|Ch2 Duty 0|0-255| |38|Ch2 ID 4-5|2 bytes
+13|Ch2 Duty 1|0-255| |39|Ch2 ID 6-7|2 bytes
+14|Ch2 Duty 2|0-255| |40|Ch3 ID 0-1|2 bytes
+15|Ch2 Duty 3|0-255| |41|Ch3 ID 2-3|2 bytes
+16|Ch3 Duty 0|0-255| |42|Ch3 ID 4-5|2 bytes
+17|Ch3 Duty 1|0-255| |43|Ch3 ID 6-7|2 bytes
+18|Ch3 Duty 2|0-255| |44|Slave Address|0-255
+19|Ch3 Duty 3|0-255| |45|Baud Rate|0-7
+20|Ch0-1 Phase|0-1| |46|Parity|0-2
+21|Ch0-1 Scaler|0-7*| |47|Stop Bits|0-1
+22|Ch2-3 Phase|0-1| |48|Firmware Revision|-
+23|Ch2-3 Scaler|0-7*| |49|*Reserved*|
+24|Device ID 0-1|2 bytes| |50|Save Settings|1
+25|Device ID 2-3|2 bytes| | | |
 
 *) See the below table for the meaning of these values:
 
