@@ -92,7 +92,6 @@ The default configuration values are:
 
 The RTU can be reset to these values by holding PD4 low on power on / reset. 
 
-
 ### Crystal selection
 It's important to pick a system clock frequency that results in the desired PWM frequency for your particular application. If you are controlling fans or other motor driven devices you'll probably want this to be outside human hearing range, if it's lights you'll want it to be high enough for persistence of vision to hide the flicker. Another consideration is the Baud-rate error that will result from choosing a system clock that is not evenly divisible by the desired communication speed. The table below shows the available PWM frequencies for a given clock and prescaler, with Baud-rate compatible clock speeds highlighted in bold: 
 
@@ -107,7 +106,7 @@ Xtal|1|8|32*|64|128*|256|1024
 **18.4320 MHz**|72.3 kHz|9.0 kHz|2.3 kHz|1.1 kHz|565 Hz|282 Hz|71 Hz
 20.0000 MHz|78.4 kHz|9.8 kHz|2.5 kHz|1.2 kHz|613 Hz|306 Hz|77 Hz
 
-*) Prescalers 32 & 128 are not available on Timer1, but we get these by changing the TOP length to 10-bits and 9-bits respectively, and scaling the 0-255 duty value accordingly. 
+*) Prescalers 32 & 128 are not available on Timer1, instead we get these by changing the TOP length to 10-bits and 9-bits respectively, and scaling the 0-255 duty value accordingly. 
 
 ### Schematic
 A schematic can be found in the KiCAD folder. This is still work in progress. 
@@ -126,8 +125,9 @@ Included is a Simulide project which runs the Atmel C code and simulates the con
 * Make comms parameters settable through Modbus registers.
 * Finish KiCAD schematic and design a PCB from it.
 #### Could:
-* Make the PCB fit in a DIN-rail enclosure.
+* Apply PWM frequency scalers without reboot. 
 * Add additional functions for long-press and double-clicks.
+* Make the PCB fit in a DIN-rail enclosure.
 #### Won't:
 * Make PWM frequency variable.
 * Replace Modbus with a different protocol. 
