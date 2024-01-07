@@ -98,11 +98,11 @@ void clockSetup(void) {
 	TIMSK0 = _BV(TOIE0); // enable overflow interrupt
 
 	// Timer1 (on B1,B2)
-	TCCR1A = _BV(COM1A1) | _BV(COM1B1) | T1WG[registers[21]];
+	TCCR1A = _BV(COM1A1) | _BV(COM1B1) | registers[20]<<COM1A0 | registers[20]<<COM1B0 | T1WG[registers[21]];
 	TCCR1B = _BV(WGM12) | T1CS[registers[21]];
 
 	// Timer2 (on B3,D3)
-	TCCR2A = _BV(COM2A1) | _BV(COM2B1) | T2WG[registers[23]];
+	TCCR2A = _BV(COM2A1) | _BV(COM2B1) | registers[22]<<COM2A0 | registers[22]<<COM2B0 | T2WG[registers[23]];
 	TCCR2B = T2CS[registers[23]];
 }
 
@@ -222,7 +222,6 @@ int main(void) {
 	updateLevels();
 
 	// TODO: make PWM phase configurable
-	// TODO: make PWM frequency configurable
 	// TODO: make comm parameters configurable
 	while(1) {
 		wdt_reset();
