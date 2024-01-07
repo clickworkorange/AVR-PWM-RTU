@@ -44,11 +44,11 @@ Register|Function|Value
 
 Pin|Port|Function| |Pin|Port|Function
 ---|----|-------------|-|---|----|-------------
-1|PC6|Reset| |15|PB1|PWM Ch0
-2|PD0|RxD| |16|PB2|PWM Ch1
-3|PD1|TxD| |17|PB3|PWM Ch2
+1|PC6|Reset| |15|PB1|Ch0 PWM
+2|PD0|RxD| |16|PB2|Ch1 PWM
+3|PD1|TxD| |17|PB3|Ch2 PWM
 4|PD2|Data Dir| |18|PB4|Ch3 Lvl LSB
-5|PD3|PWM Ch3| |19|PB5|Ch3 Lvl MSB
+5|PD3|Ch3 PWM| |19|PB5|Ch3 Lvl MSB
 6|PD4|Load Defaults| |20|AVCC|+5V
 7|Vcc|+5V| |21|AREF|n/c
 8|GND|GND| |22|GND|GND
