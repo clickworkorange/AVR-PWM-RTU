@@ -4,7 +4,6 @@
 - <a href="#defaults">Defaults</a>
 - <a href="#crystal-selection">Crystal selection</a>
 - <a href="#schematic">Schematic</a>
-- <a href="#simulation">Simulation</a>
 - <a href="#future">Future</a>
 - <a href="#wetware-at-work">Wetware at work</a>
 
@@ -113,11 +112,6 @@ Xtal|1|8|32*|64|128*|256|1024
 A schematic can be found in the KiCAD folder. This is still work in progress. 
 
 ![Schematic](https://raw.githubusercontent.com/clickworkorange/Atmel-PWM-RTU/main/Schematic.png)
-
-### Simulation
-Included is a Simulide project which runs the Atmel C code and simulates the control panels: 
-
-![Simulide](https://raw.githubusercontent.com/clickworkorange/Atmel-PWM-RTU/main/Simulide.png)
 
 ### Future
 #### Must:
