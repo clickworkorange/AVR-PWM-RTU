@@ -8,7 +8,7 @@
 - <a href="#wetware-at-work">Wetware at work</a>
 
 ### Description
-A Modbus and push-button controlled 4-channel PWM generator based on the Atmel ATMega 328. Each channel can be set to one of four pre-defined duty cycles (0-255). In addition to being controllable by Modbus commands, the channel levels (0-3) can also be selected by means of individual push-buttons, wich increment a channel's level, wrapping at 3. The active level for each channel is output as a 2-bit value which is used to drive a set of four LEDs by means of a 74HC138 decoder. The idea is to allow for remote control of the individual channels over a three-wire interface (plus GND and VCC). The Modbus communication layer is provided by the <a href="https://github.com/mbs38/yaMBSiavr">yaMBSiavr</a> library. The code compiles to 9.3kB. 
+A Modbus and push-button controlled 4-channel PWM generator based on the Atmel ATMega328. Each channel can be set to one of four pre-defined duty cycles (0-255). In addition to being controllable by Modbus commands, the channel levels (0-3) can also be selected by means of individual push-buttons, wich increment a channel's level, wrapping at 3. The active level for each channel is output as a 2-bit value which is used to drive a set of four LEDs by means of a 74HC138 decoder. The idea is to allow for remote control of the individual channels over a three-wire interface (plus GND and VCC). The Modbus communication layer is provided by the <a href="https://github.com/mbs38/yaMBSiavr">yaMBSiavr</a> library. The code compiles to 9.3kB. 
 
 *N.b. this is still work in progress and some features are yet to be implemented - see <a href="#future">future</a>.*
 
@@ -119,11 +119,12 @@ A schematic can be found in the KiCAD folder. This is still work in progress.
 #### Should:
 * Finish KiCAD schematic and design a PCB from it.
 #### Could:
-* Apply PWM frequency scalers without reboot. 
+* Apply PWM frequency scalers without reboot.
+* Smooth level transitions. 
 * Add additional functions for long-press and double-clicks.
 * Make the PCB fit in a DIN-rail enclosure.
 #### Won't:
-* Make PWM frequency variable.
+* Make PWM frequency continuously variable.
 * Replace Modbus with a different protocol. 
 
 ### Wetware at work
