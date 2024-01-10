@@ -106,7 +106,7 @@ Xtal|1|8|32*|64|128*|256|1024
 **18.4320 MHz**|72.3 kHz|9.0 kHz|2.3 kHz|1.1 kHz|565 Hz|282 Hz|71 Hz
 20.0000 MHz|78.4 kHz|9.8 kHz|2.5 kHz|1.2 kHz|613 Hz|306 Hz|77 Hz
 
-*) Prescalers 32 & 128 are not available on Timer1, instead we get these by changing the TOP length to 10-bits and 9-bits respectively, and scaling the 0-255 duty value accordingly. 
+*) Prescalers 32 & 128 are not available on Timer1, instead we get these by changing the TOP length to 10-bits / scaler 8 and 9-bits / scaler 64 respectively, and <a href="https://github.com/clickworkorange/AVR-PWM-RTU/blob/cd5e14912393d223fffba5abe3af9f1dc7a8ffb7/AVR/avr_pwm_rtu.c#L113-L127">scaling the 0-255 duty value</a> accordingly. 
 
 ### Schematic
 A schematic can be found in the KiCAD folder. This is still work in progress. 
