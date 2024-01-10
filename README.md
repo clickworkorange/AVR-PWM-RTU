@@ -44,7 +44,7 @@ Modbus register values are limited to a maximum value for each register; attempt
 24|Device ID 0-1|2 bytes| |50|Save Settings|1/0
 25|Device ID 2-3|2 bytes| | | |
 
-*) See the below table for the meaning of these values:
+*) See the below table for the meaning of the scaler values:
 
 **Value**|0|1|2|3|4|5|6|7
 -----|----|----|----|----|----|----|----|----
