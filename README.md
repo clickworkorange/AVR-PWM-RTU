@@ -50,7 +50,7 @@ Modbus register values are limited to a maximum value for each register; attempt
 -----|----|----|----|----|----|----|----|----
 **Scaler**|0|1|8|32|64|128|256|1024
 
-Setting either of the scaler registers to zero disables those two channels. See <a href="#crystal-selection">Crystal selection</a> for the PWM frequencies resulting from the different prescalers. 
+Setting either of the scaler registers to zero disables those two channels. See <a href="#crystal-selection">Crystal selection</a> for the PWM frequencies resulting from the different prescalers. Note that at present changes to scalers, inversion and communication parameters requires rebooting the RTU for the changes to take effect. 
 
 ### AVR pin map
 
