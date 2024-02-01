@@ -4,6 +4,7 @@
 - <a href="#defaults">Defaults</a>
 - <a href="#crystal-selection">Crystal selection</a>
 - <a href="#schematic">Schematic</a>
+- <a href="#pcb-layout">PCB layout</a>
 - <a href="#future">Future</a>
 - <a href="#wetware-at-work">Wetware at work</a>
 
@@ -109,13 +110,23 @@ Xtal|1|8|32*|64|128*|256|1024
 \*) Prescalers 32 & 128 are not available on Timer1, instead we get these by changing the TOP length to 10-bits / scaler 8 and 9-bits / scaler 64 respectively, and <a href="https://github.com/clickworkorange/AVR-PWM-RTU/blob/cd5e14912393d223fffba5abe3af9f1dc7a8ffb7/AVR/avr_pwm_rtu.c#L113-L127">scaling the 0-255 duty value</a> accordingly. 
 
 ### Schematic
-Please ignore the schematic for now - it's very much in flux and I'm in the process of completely re-working it. 
+The schematic has been updated to revision 0.2 and is now presentable - you can find it in [the /KiCAD folder](https://github.com/clickworkorange/AVR-PWM-RTU/tree/main/KiCAD). There will be more changes, not least on the input side, but this should work: 
+![https://github.com/clickworkorange/AVR-PWM-RTU/blob/main/Schematic.png?raw=true]
+I will soon add the schematic for the remote control panels as well. 
+
+### PCB layout
+I've finished a PCB layout which is sized to fit in a 3U DIN-rail enclosure - it was a tight fit but it's in: 
+![https://github.com/clickworkorange/AVR-PWM-RTU/blob/main/PCB-front.png?raw=true]
+![https://github.com/clickworkorange/AVR-PWM-RTU/blob/main/PCB-back.png?raw=true]
+![https://github.com/clickworkorange/AVR-PWM-RTU/blob/main/PCB-3D-front.png?raw=true]
+![https://github.com/clickworkorange/AVR-PWM-RTU/blob/main/PCB-3D-back.png?raw=true]
+I have yet to find a good source for multi-level screw terminals with a 3.5mm pitch, but I know they're out there somewhere! You can find the PCB layout together with the schematic in [the /KiCAD folder](https://github.com/clickworkorange/AVR-PWM-RTU/tree/main/KiCAD). 
 
 ### Future
 #### Must:
 * Make comms parameters settable through Modbus registers.
 #### Should:
-* Finish KiCAD schematic and design a PCB from it.
+* *nothing here right now*
 #### Could:
 * Apply PWM frequency scalers without reboot.
 * Smooth level transitions. 
