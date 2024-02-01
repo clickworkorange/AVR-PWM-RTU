@@ -8,7 +8,7 @@
 - <a href="#wetware-at-work">Wetware at work</a>
 
 ### Description
-A Modbus and push-button controlled 4-channel PWM generator based on the Atmel ATMega 328. Each channel can be set to one of four pre-defined duty cycles (0-255). In addition to being controllable by Modbus commands, the channel levels (0-3) can also be selected by means of individual push-buttons, wich increment a channel's level, wrapping at 3. The active level for each channel is output as a 2-bit value which is used to drive a set of four LEDs by means of a 74HC138 decoder. The idea is to allow for remote control of the individual channels over a three-wire interface (plus GND and VCC). The Modbus communication layer is provided by the <a href="https://github.com/mbs38/yaMBSiavr">yaMBSiavr</a> library. The code compiles to 9.3kB. 
+A Modbus and push-button controlled 4-channel PWM generator based on the Atmel ATMega328. Each channel can be set to one of four pre-defined duty cycles (0-255). In addition to being controllable by Modbus commands, the channel levels (0-3) can also be selected by means of individual push-buttons, wich increment a channel's level, wrapping at 3. The active level for each channel is output as a 2-bit value which is used to drive a set of four LEDs by means of a 74HC138 decoder. The idea is to allow for remote control of the individual channels over a three-wire interface (plus GND and VCC). The Modbus communication layer is provided by the <a href="https://github.com/mbs38/yaMBSiavr">yaMBSiavr</a> library. The code compiles to 9.3kB. 
 
 *N.b. this is still work in progress and some features are yet to be implemented - see <a href="#future">future</a>.*
 
@@ -44,13 +44,13 @@ Modbus register values are limited to a maximum value for each register; attempt
 24|Device ID 0-1|2 bytes| |50|Save Settings|1/0
 25|Device ID 2-3|2 bytes| | | |
 
-\*) See the below table for the meaning of these values:
+\*) See the below table for the meaning of the scaler values:
 
 **Value**|0|1|2|3|4|5|6|7
 -----|----|----|----|----|----|----|----|----
 **Scaler**|0|1|8|32|64|128|256|1024
 
-Setting either of the scaler registers to zero disables those two channels. See <a href="#crystal-selection">Crystal selection</a> for the PWM frequencies resulting from the different prescalers. 
+Setting either of the scaler registers to zero disables those two channels. See <a href="#crystal-selection">Crystal selection</a> for the PWM frequencies resulting from the different prescalers. Note that at present changes to scalers, inversion and communication parameters requires rebooting the RTU for the changes to take effect. 
 
 ### AVR pin map
 
@@ -106,7 +106,7 @@ Xtal|1|8|32*|64|128*|256|1024
 **18.4320 MHz**|72.3 kHz|9.0 kHz|2.3 kHz|1.1 kHz|565 Hz|282 Hz|71 Hz
 20.0000 MHz|78.4 kHz|9.8 kHz|2.5 kHz|1.2 kHz|613 Hz|306 Hz|77 Hz
 
-\*) Prescalers 32 & 128 are not available on Timer1, instead we get these by changing the TOP length to 10-bits and 9-bits respectively, and scaling the 0-255 duty value accordingly. 
+\*) Prescalers 32 & 128 are not available on Timer1, instead we get these by changing the TOP length to 10-bits / scaler 8 and 9-bits / scaler 64 respectively, and <a href="https://github.com/clickworkorange/AVR-PWM-RTU/blob/cd5e14912393d223fffba5abe3af9f1dc7a8ffb7/AVR/avr_pwm_rtu.c#L113-L127">scaling the 0-255 duty value</a> accordingly. 
 
 ### Schematic
 Please ignore the schematic for now - it's very much in flux and I'm in the process of completely re-working it. 
@@ -117,11 +117,12 @@ Please ignore the schematic for now - it's very much in flux and I'm in the proc
 #### Should:
 * Finish KiCAD schematic and design a PCB from it.
 #### Could:
-* Apply PWM frequency scalers without reboot. 
+* Apply PWM frequency scalers without reboot.
+* Smooth level transitions. 
 * Add additional functions for long-press and double-clicks.
 * Make the PCB fit in a DIN-rail enclosure.
 #### Won't:
-* Make PWM frequency variable.
+* Make PWM frequency continuously variable.
 * Replace Modbus with a different protocol. 
 
 ### Wetware at work
