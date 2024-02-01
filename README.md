@@ -44,7 +44,7 @@ Modbus register values are limited to a maximum value for each register; attempt
 24|Device ID 0-1|2 bytes| |50|Save Settings|1/0
 25|Device ID 2-3|2 bytes| | | |
 
-*) See the below table for the meaning of these values:
+\*) See the below table for the meaning of these values:
 
 **Value**|0|1|2|3|4|5|6|7
 -----|----|----|----|----|----|----|----|----
@@ -106,12 +106,10 @@ Xtal|1|8|32*|64|128*|256|1024
 **18.4320 MHz**|72.3 kHz|9.0 kHz|2.3 kHz|1.1 kHz|565 Hz|282 Hz|71 Hz
 20.0000 MHz|78.4 kHz|9.8 kHz|2.5 kHz|1.2 kHz|613 Hz|306 Hz|77 Hz
 
-*) Prescalers 32 & 128 are not available on Timer1, instead we get these by changing the TOP length to 10-bits and 9-bits respectively, and scaling the 0-255 duty value accordingly. 
+\*) Prescalers 32 & 128 are not available on Timer1, instead we get these by changing the TOP length to 10-bits and 9-bits respectively, and scaling the 0-255 duty value accordingly. 
 
 ### Schematic
-A schematic can be found in the KiCAD folder. This is still work in progress. 
-
-![Schematic](https://raw.githubusercontent.com/clickworkorange/Atmel-PWM-RTU/main/Schematic.png)
+Please ignore the schematic for now - it's very much in flux and I'm in the process of completely re-working it. 
 
 ### Future
 #### Must:
