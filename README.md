@@ -111,15 +111,15 @@ Xtal|1|8|32*|64|128*|256|1024
 
 ### Schematic
 The schematic has been updated to revision 0.2 and is now presentable - you can find it in [the /KiCAD folder](https://github.com/clickworkorange/AVR-PWM-RTU/tree/main/KiCAD). There will be more changes, not least on the input side, but this should work: 
-![](https://github.com/clickworkorange/AVR-PWM-RTU/blob/main/Schematic.png?raw=true)
+![](https://github.com/clickworkorange/AVR-PWM-RTU/blob/main/Controller-Schematic.png?raw=true)
 I will soon add the schematic for the remote control panels as well. 
 
 ### PCB layout
 I've finished a PCB layout which is sized to fit in a 3U DIN-rail enclosure - it was a tight fit but it's in: 
-![](https://github.com/clickworkorange/AVR-PWM-RTU/blob/main/PCB-front.png?raw=true)
-![](https://github.com/clickworkorange/AVR-PWM-RTU/blob/main/PCB-back.png?raw=true)
-![](https://github.com/clickworkorange/AVR-PWM-RTU/blob/main/PCB-3D-front.png?raw=true)
-![](https://github.com/clickworkorange/AVR-PWM-RTU/blob/main/PCB-3D-back.png?raw=true)
+![](https://github.com/clickworkorange/AVR-PWM-RTU/blob/main/Controller-PCB-front.png?raw=true)
+![](https://github.com/clickworkorange/AVR-PWM-RTU/blob/main/Controller-PCB-back.png?raw=true)
+![](https://github.com/clickworkorange/AVR-PWM-RTU/blob/main/Controller-PCB-3D-front.png?raw=true)
+![](https://github.com/clickworkorange/AVR-PWM-RTU/blob/main/Controller-PCB-3D-back.png?raw=true)
 I have yet to find a good source for multi-level screw terminals with a 3.5mm pitch, but I know they're out there somewhere! You can find the PCB layout together with the schematic in [the /KiCAD folder](https://github.com/clickworkorange/AVR-PWM-RTU/tree/main/KiCAD). 
 
 ### Future
