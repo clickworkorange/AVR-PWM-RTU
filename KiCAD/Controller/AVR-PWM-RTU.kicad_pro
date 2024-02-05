@@ -346,8 +346,12 @@
     }
   },
   "libraries": {
-    "pinned_footprint_libs": [],
-    "pinned_symbol_libs": []
+    "pinned_footprint_libs": [
+      "AVR-PWM-RTU"
+    ],
+    "pinned_symbol_libs": [
+      "AVR-PWM-RTU"
+    ]
   },
   "meta": {
     "filename": "AVR-PWM-RTU.kicad_pro",

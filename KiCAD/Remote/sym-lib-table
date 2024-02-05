@@ -1,0 +1,3 @@
+(sym_lib_table
+  (lib (name "AVR-PWM-RTU")(type "KiCad")(uri "${KIPRJMOD}/../AVR-PWM-RTU.kicad_sym")(options "")(descr ""))
+)
