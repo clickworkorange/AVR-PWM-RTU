@@ -112,7 +112,7 @@ Xtal|1|8|32*|64|128*|256|1024
 
 ### Schematic
 The schematic has been updated to revision 0.2 and is now presentable - you can find it in [the /KiCAD folder](https://github.com/clickworkorange/AVR-PWM-RTU/tree/main/KiCAD). There will be more changes, not least on the input side, but this should work: 
-![](https://github.com/clickworkorange/AVR-PWM-RTU/blob/main/Controller-Schematic.png?raw=true)
+![](https://github.com/clickworkorange/AVR-PWM-RTU/blob/main/Controller-schematic.png?raw=true)
 See <a href="#the-remote-panels">below</a> for the remote panel schematic & PCB layout. 
 
 ### PCB layout
@@ -126,7 +126,7 @@ I have yet to find a good source for multi-level screw terminals with a 3.5mm pi
 ### The remote panels
 The remote panels consist of push-button and four LEDs indicating the channel's level. The LEDs light up incrementally, with one LED lit for level 0 and all four lit at level 3: 
 
-![](https://github.com/clickworkorange/AVR-PWM-RTU/blob/main/Remote-Schematic.png?raw=true)
+![](https://github.com/clickworkorange/AVR-PWM-RTU/blob/main/Remote-schematic.png?raw=true)
 
 There is also a tiny PCB for it, just 5x3 cm, to make it easy to fit wherever you want: 
 
