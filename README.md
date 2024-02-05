@@ -125,8 +125,11 @@ I have yet to find a good source for multi-level screw terminals with a 3.5mm pi
 
 ### The remote panels
 The remote panels consist of push-button and four LEDs indicating the channel's level. The LEDs light up incrementally, with one LED lit for level 0 and all four lit at level 3: 
+
 ![](https://github.com/clickworkorange/AVR-PWM-RTU/blob/main/Remote-Schematic.png?raw=true)
+
 There is also a tiny PCB for it, just 5x3 cm, to make it easy to fit wherever you want: 
+
 ![](https://github.com/clickworkorange/AVR-PWM-RTU/blob/main/Remote-PCB-front.png?raw=true)
 ![](https://github.com/clickworkorange/AVR-PWM-RTU/blob/main/Remote-PCB-back.png?raw=true)
 
