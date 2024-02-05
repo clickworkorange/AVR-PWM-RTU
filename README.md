@@ -128,10 +128,12 @@ The remote panels consist of push-button and four LEDs indicating the channel's 
 
 ![](https://github.com/clickworkorange/AVR-PWM-RTU/blob/main/Remote-schematic.png?raw=true)
 
-There is also a tiny PCB for it, just 5x3 cm, to make it easy to fit wherever you want: 
+There is also a tiny PCB for it, just 5x3 cm, which should make it easy to fit wherever you want: 
 
 ![](https://github.com/clickworkorange/AVR-PWM-RTU/blob/main/Remote-PCB-front.png?raw=true)
 ![](https://github.com/clickworkorange/AVR-PWM-RTU/blob/main/Remote-PCB-back.png?raw=true)
+
+![](https://github.com/clickworkorange/AVR-PWM-RTU/blob/main/Remote-PCB-3D.png?raw=true)
 
 ### Future
 #### Must:
