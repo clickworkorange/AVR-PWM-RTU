@@ -5,7 +5,7 @@
 - <a href="#crystal-selection">Crystal selection</a>
 - <a href="#schematic">Schematic</a>
 - <a href="#pcb-layout">PCB layout</a>
-- <a href="the-remote-panels">The remote panels</a>
+- <a href="#the-remote-panels">The remote panels</a>
 - <a href="#future">Future</a>
 - <a href="#wetware-at-work">Wetware at work</a>
 
@@ -113,7 +113,7 @@ Xtal|1|8|32*|64|128*|256|1024
 ### Schematic
 The schematic has been updated to revision 0.2 and is now presentable - you can find it in [the /KiCAD folder](https://github.com/clickworkorange/AVR-PWM-RTU/tree/main/KiCAD). There will be more changes, not least on the input side, but this should work: 
 ![](https://github.com/clickworkorange/AVR-PWM-RTU/blob/main/Controller-Schematic.png?raw=true)
-See <a href="the-remote-panels">below</a> for the remote panel schematic & PCB layout. 
+See <a href="#the-remote-panels">below</a> for the remote panel schematic & PCB layout. 
 
 ### PCB layout
 The project includes a PCB layout which is sized to fit in a 3U DIN-rail enclosure: 
