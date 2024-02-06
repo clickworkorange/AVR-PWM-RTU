@@ -144,7 +144,8 @@ There is also a tiny PCB for it, just 5x3 cm, which should make it easy to fit w
 * Apply PWM frequency scalers without reboot.
 * Smooth level transitions. 
 * Add additional functions for long-press and double-clicks.
-* Make the PCB fit in a DIN-rail enclosure.
+* Use the four additional I/Os on the ATMega328PU for feedback.
+* Make an MCU based remote with additional features. 
 #### Won't:
 * Make PWM frequency continuously variable.
 * Replace Modbus with a different protocol. 
