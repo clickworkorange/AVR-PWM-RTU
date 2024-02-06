@@ -139,7 +139,7 @@ There is also a tiny PCB for it, just 5x3 cm, which should make it easy to fit w
 #### Must:
 * Make comms parameters settable through Modbus registers.
 #### Should:
-* *nothing here right now*
+* Make a version for the ATMega328PU.
 #### Could:
 * Apply PWM frequency scalers without reboot.
 * Smooth level transitions. 
